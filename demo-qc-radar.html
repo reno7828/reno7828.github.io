@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QC Radar — Démo | Renaud Oriou</title>
+<meta name="description" content="Démo interactive de QC Radar, outil de détection d'anomalies sur données de mesures — Renaud Oriou.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  :root{
+    --bg:#0B0F14; --panel:#121820; --ink:#E7ECF1; --ink-dim:#8B97A5;
+    --line:#232C37; --line-soft:#1A222C; --amber:#E0973D; --amber-soft:rgba(224,151,61,0.12);
+    --cyan:#4FC3B0; --cyan-soft:rgba(79,195,176,0.12); --red:#E0603D; --red-soft:rgba(224,96,61,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans',system-ui,sans-serif;
+    line-height:1.6;
+    background-image:linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:64px 64px; background-attachment:fixed;
+  }
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; font-weight:600; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; }
+  a{ color:inherit; }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 28px; }
+
+  header.site{ position:sticky; top:0; z-index:50; background:rgba(11,15,20,0.9); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .brand{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:0.98rem; }
+  .brand .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--amber); border:1px solid var(--amber); padding:2px 7px; margin-left:10px; }
+  nav a.back{ font-size:0.86rem; color:var(--ink-dim); text-decoration:none; border-bottom:1px solid transparent; }
+  nav a.back:hover{ color:var(--amber); border-color:var(--amber); }
+
+  .hero{ padding:56px 0 40px; border-bottom:1px solid var(--line); }
+  .hero .ref{ font-size:0.78rem; color:var(--amber); display:flex; align-items:center; gap:10px; margin-bottom:16px; }
+  .hero .ref .blip{ width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 0 3px var(--cyan-soft); animation:pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+  .hero h1{ font-size:clamp(1.9rem,4.5vw,2.6rem); max-width:20ch; }
+  .hero p{ margin-top:14px; color:var(--ink-dim); max-width:64ch; font-size:1rem; }
+  .disclaimer{
+    margin-top:22px; display:inline-flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--cyan);
+    border:1px solid var(--cyan); background:var(--cyan-soft); padding:8px 14px;
+  }
+
+  section{ padding:44px 0; border-bottom:1px solid var(--line); }
+
+  .toolbar{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:28px; }
+  .toolbar .info{ font-size:0.88rem; color:var(--ink-dim); }
+  .toolbar .info span{ color:var(--ink); }
+  .btn{ font-family:'IBM Plex Mono',monospace; font-size:0.86rem; font-weight:600; padding:11px 20px;
+    border:1px solid var(--amber); background:var(--amber); color:#0B0F14; cursor:pointer; border-radius:2px;
+    transition:transform .15s ease, box-shadow .15s ease; }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 0 0 3px var(--amber-soft); }
+  .btn:disabled{ opacity:0.55; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:28px; }
+  .stat{ background:var(--panel); padding:20px 22px; }
+  .stat .num{ font-family:'IBM Plex Mono',monospace; font-size:1.6rem; }
+  .stat .num.ok{ color:var(--cyan); }
+  .stat .num.warn{ color:var(--amber); }
+  .stat .num.bad{ color:var(--red); }
+  .stat .lbl{ margin-top:6px; font-size:0.8rem; color:var(--ink-dim); }
+
+  .panel{ background:var(--panel); border:1px solid var(--line); padding:26px; position:relative; margin-bottom:20px; }
+  .panel::before{ content:""; position:absolute; top:-1px; left:-1px; width:14px; height:14px; border-top:2px solid var(--amber); border-left:2px solid var(--amber); }
+  .panel::after{ content:""; position:absolute; bottom:-1px; right:-1px; width:14px; height:14px; border-bottom:2px solid var(--amber); border-right:2px solid var(--amber); }
+  .panel h3{ font-size:1rem; margin-bottom:4px; }
+  .panel .sub{ font-size:0.84rem; color:var(--ink-dim); margin-bottom:18px; }
+  .chart-wrap{ height:300px; }
+
+  table{ width:100%; border-collapse:collapse; font-size:0.88rem; }
+  th{ text-align:left; font-family:'IBM Plex Mono',monospace; font-size:0.76rem; color:var(--ink-dim); padding:10px 12px; border-bottom:1px solid var(--line); }
+  td{ padding:10px 12px; border-bottom:1px solid var(--line-soft); }
+  tr:last-child td{ border-bottom:none; }
+  .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; padding:3px 9px; border-radius:2px; display:inline-block; }
+  .tag.fail{ color:var(--red); border:1px solid var(--red); background:var(--red-soft); }
+  .tag.anomaly{ color:var(--amber); border:1px solid var(--amber); background:var(--amber-soft); }
+  .tag.ok{ color:var(--cyan); border:1px solid var(--cyan); background:var(--cyan-soft); }
+
+  footer{ padding:30px 0 46px; text-align:center; color:var(--ink-dim); font-size:0.82rem; font-family:'IBM Plex Mono',monospace; }
+
+  @media (max-width:720px){
+    .stats{ grid-template-columns:repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="wrap">
+    <div class="brand">SpecWatch <span class="tag">DÉMO</span></div>
+    <a class="back" href="index.html">&larr; Retour au profil</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="ref"><span class="blip"></span><span class="mono">DÉMO INTERACTIVE — DÉTECTION D'ANOMALIES</span></div>
+    <h1>SpecWatch</h1>
+    <p>Un outil que je développe pour automatiser le contrôle de fiches de mesures de test électronique : détection des FAIL, des pièces atypiques par rapport au lot, et comparaison entre lots de production.</p>
+    <div class="disclaimer">⚠ Données 100% simulées — aucune donnée réelle ou confidentielle n'est utilisée ici</div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="toolbar">
+    <div class="info">Lot analysé : <span class="mono" id="lotName">DEMO-LOT-001</span> — <span id="sampleCount">120</span> pièces, <span id="testCount">8</span> tests par pièce</div>
+    <button class="btn" id="regenBtn">↻ RELANCER L'ANALYSE</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num ok mono" id="statTotal">120</div><div class="lbl">Pièces analysées</div></div>
+    <div class="stat"><div class="num bad mono" id="statFail">0</div><div class="lbl">FAIL détectés</div></div>
+    <div class="stat"><div class="num warn mono" id="statAnomaly">0</div><div class="lbl">Pièces atypiques (z-score)</div></div>
+    <div class="stat"><div class="num mono" id="statTime">0.0s</div><div class="lbl">Temps d'analyse simulé</div></div>
+  </div>
+
+  <div class="panel">
+    <h3>Distribution des mesures — Test T3 (tension de sortie)</h3>
+    <div class="sub">Chaque point représente une pièce du lot. Les points en dehors des limites sont mis en évidence.</div>
+    <div class="chart-wrap"><canvas id="scatterChart"></canvas></div>
+  </div>
+
+  <div class="panel">
+    <h3>Pièces signalées</h3>
+    <div class="sub">Détail des FAIL et anomalies statistiques détectés sur ce lot.</div>
+    <table>
+      <thead><tr><th>SN</th><th>Test</th><th>Valeur</th><th>Statut</th></tr></thead>
+      <tbody id="failTableBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer>© ORIOU RENAUD — DÉMO TECHNIQUE, DONNÉES SYNTHÉTIQUES</footer>
+
+<script>
+const TESTS = ['T1 (courant repos)','T2 (impédance)','T3 (tension sortie)','T4 (bruit)','T5 (dérive thermique)'];
+let chart;
+
+function gaussianRandom(mean, std){
+  let u = 1 - Math.random(), v = Math.random();
+  return mean + std * Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+let analysisBusy = false;
+
+function runAnalysis(){
+  if(analysisBusy) return;
+  analysisBusy = true;
+  const btn = document.getElementById('regenBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ ANALYSE EN COURS...';
+
+  const n = 100 + Math.floor(Math.random()*40);
+  const mean = 3.3, std = 0.06, lowerSpec = 3.1, upperSpec = 3.5;
+  const points = [];
+  const failed = [];
+  const anomalies = [];
+
+  for(let i=1;i<=n;i++){
+    const sn = 'DEMO-' + String(i).padStart(4,'0');
+    let val = gaussianRandom(mean, std);
+    // inject occasional real fails and outliers so the demo has something to find
+    if(Math.random() < 0.035){ val = lowerSpec - Math.random()*0.15; }
+    if(Math.random() < 0.02){ val = upperSpec + Math.random()*0.15; }
+    const isFail = val < lowerSpec || val > upperSpec;
+    const z = (val - mean) / std;
+    const isAnomaly = !isFail && Math.abs(z) > 2.3;
+
+    points.push({x:i, y:val, fail:isFail, anomaly:isAnomaly});
+    if(isFail) failed.push({sn, test:'T3 (tension sortie)', val:val.toFixed(3)+' V', status:'fail'});
+    else if(isAnomaly) anomalies.push({sn, test:'T3 (tension sortie)', val:val.toFixed(3)+' V', status:'anomaly'});
+  }
+
+  document.getElementById('lotName').textContent = 'DEMO-LOT-' + (100+Math.floor(Math.random()*900));
+  document.getElementById('sampleCount').textContent = n;
+  document.getElementById('testCount').textContent = TESTS.length;
+  document.getElementById('statTotal').textContent = n;
+  document.getElementById('statFail').textContent = failed.length;
+  document.getElementById('statAnomaly').textContent = anomalies.length;
+  document.getElementById('statTime').textContent = (0.4 + Math.random()*0.5).toFixed(1) + 's';
+
+  const tbody = document.getElementById('failTableBody');
+  tbody.innerHTML = '';
+  [...failed, ...anomalies].slice(0,10).forEach(row => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="mono">${row.sn}</td><td>${row.test}</td><td class="mono">${row.val}</td>
+      <td><span class="tag ${row.status}">${row.status === 'fail' ? 'FAIL' : 'ANOMALIE'}</span></td>`;
+    tbody.appendChild(tr);
+  });
+  if(failed.length === 0 && anomalies.length === 0){
+    tbody.innerHTML = '<tr><td colspan="4" style="color:var(--ink-dim)">Aucune pièce signalée sur ce lot.</td></tr>';
+  }
+
+  const ctx = document.getElementById('scatterChart').getContext('2d');
+  if(chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'scatter',
+    data: {
+      datasets: [
+        { label:'OK', data: points.filter(p=>!p.fail && !p.anomaly).map(p=>({x:p.x,y:p.y})), backgroundColor:'#4FC3B0', pointRadius:3 },
+        { label:'Anomalie', data: points.filter(p=>p.anomaly).map(p=>({x:p.x,y:p.y})), backgroundColor:'#E0973D', pointRadius:5 },
+        { label:'FAIL', data: points.filter(p=>p.fail).map(p=>({x:p.x,y:p.y})), backgroundColor:'#E0603D', pointRadius:5 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      scales: {
+        x: { title:{display:true, text:'N° pièce', color:'#8B97A5'}, ticks:{color:'#8B97A5'}, grid:{color:'#1A222C'} },
+        y: { title:{display:true, text:'Tension (V)', color:'#8B97A5'}, ticks:{color:'#8B97A5'}, grid:{color:'#1A222C'} }
+      },
+      plugins: { legend: { labels:{ color:'#E7ECF1', font:{family:'IBM Plex Mono'} } } }
+    }
+  });
+
+  setTimeout(() => {
+    analysisBusy = false;
+    btn.disabled = false;
+    btn.textContent = "↻ RELANCER L'ANALYSE";
+  }, 900);
+}
+
+document.getElementById('regenBtn').addEventListener('click', runAnalysis);
+runAnalysis();
+</script>
+
+</body>
+</html>
