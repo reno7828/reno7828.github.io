@@ -1,194 +1,362 @@
 <!DOCTYPE html>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-  <head>
-    <title>CV Renaud Oriou</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, user-scalable=no"
-    />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <noscript
-      ><link rel="stylesheet" href="assets/css/noscript.css"
-    /></noscript>
-  </head>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renaud Oriou — Technicien Automatisation & Développeur Outils / Cybersécurité</title>
+<meta name="description" content="Portfolio de Renaud Oriou — technicien test & validation, développeur d'outils Python, cybersécurité.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0F14;
+    --panel:#121820;
+    --panel-2:#161D27;
+    --ink:#E7ECF1;
+    --ink-dim:#8B97A5;
+    --line:#232C37;
+    --line-soft:#1A222C;
+    --amber:#E0973D;
+    --amber-soft:rgba(224,151,61,0.12);
+    --cyan:#4FC3B0;
+    --cyan-soft:rgba(79,195,176,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:64px 64px;
+    background-attachment:fixed;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk','IBM Plex Sans',sans-serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:3px;}
+  .wrap{max-width:960px; margin:0 auto; padding:0 28px;}
 
-  <body class="landing is-preload">
-    <!-- Page Wrapper -->
-    <div id="page-wrapper">
-      <!-- Header -->
-      <header id="header" class="alt">
-        <nav id="nav"></nav>
-      </header>
+  /* ---------- Nav ---------- */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(11,15,20,0.86);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{ display:flex; align-items:center; justify-content:space-between; height:66px; }
+  .brand{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:1.02rem; display:flex; align-items:center; gap:10px; }
+  .brand .tag{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--amber); border:1px solid var(--amber); padding:2px 7px; border-radius:2px; }
+  nav ul{ display:flex; gap:30px; list-style:none; }
+  nav a{ font-size:0.88rem; text-decoration:none; color:var(--ink-dim); padding:4px 0; border-bottom:1px solid transparent; transition:color .15s, border-color .15s; }
+  nav a:hover{ color:var(--ink); border-color:var(--amber); }
+  .nav-toggle{ display:none; background:none; border:1px solid var(--line); border-radius:4px; padding:8px 10px; color:var(--ink); }
 
-      <!-- Banner -->
-      <section id="banner">
-        <div class="inner">
-          <h2>Oriou Renaud</h2>
-          <p>
-            Technicien de test Analogique & numerique<br />Technicien programmation & cybersécurité
-          </p>
-        </div>
-        <a href="#one" class="more scrolly">Learn More</a>
-      </section>
+  /* ---------- Hero ---------- */
+  .hero{ position:relative; padding:96px 0 0; border-bottom:1px solid var(--line); overflow:hidden; }
+  .hero .grid-frame{ position:absolute; inset:0; pointer-events:none; }
+  .hero .corner{ position:absolute; width:22px; height:22px; border:1px solid var(--amber); opacity:0.6; }
+  .hero .corner.tl{ top:24px; left:24px; border-right:none; border-bottom:none; }
+  .hero .corner.tr{ top:24px; right:24px; border-left:none; border-bottom:none; }
+  .hero-inner{ position:relative; padding-bottom:52px; }
+  .hero .ref{ font-size:0.78rem; color:var(--amber); letter-spacing:0.04em; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
+  .hero .ref .blip{ width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 0 3px var(--cyan-soft); animation:pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+  .hero h1{ font-size:clamp(2.3rem, 6vw, 3.6rem); line-height:1.05; max-width:16ch; }
+  .hero .role{ margin-top:18px; font-size:1.18rem; color:var(--ink-dim); max-width:48ch; }
+  .hero .lead{ margin-top:20px; max-width:60ch; color:var(--ink-dim); font-size:1rem; }
+  .hero .actions{ margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:2px; font-size:0.92rem; font-weight:600; text-decoration:none; border:1px solid var(--amber); transition:transform .15s ease, background .15s ease, color .15s ease; font-family:'IBM Plex Mono',monospace; }
+  .btn.primary{ background:var(--amber); color:#0B0F14; }
+  .btn.primary:hover{ transform:translateY(-1px); box-shadow:0 0 0 3px var(--amber-soft); }
+  .btn.ghost{ background:transparent; color:var(--ink); border-color:var(--line); }
+  .btn.ghost:hover{ border-color:var(--amber); color:var(--amber); }
 
-      <!-- One -->
-      <section id="one" class="wrapper style1 special">
-        <div class="inner">
-          <header class="major">
-            <h2>Profil professionnel</h2>
-            <p>
-              Technicien de Test expérimenté cherchant à apporter une
-              contribution précieuse à l'amélioration globale des processus et
-              des méthodologies, en mettant en avant ses compétences dans la
-              gestion et l'optimisation des bancs de test, dans un environnement
-              professionnel dynamique.<br />Autodidacte passionné par la cybersécurité et la programmation , 
-	      j'ai acquis de solides compétences techniques par l'expérience et l'apprentissage autonome. 
-	      Je suis déterminé à mettre mes connaissances au service de la protection des systèmes d'information, l'automatisation de tâches récurrentes et le développement de solutions efficaces.
-            </p>
-          </header>
-          <ul class="icons major">
-            <li>
-              <span class="fas fa-cogs"><span class="label"></span></span>
-            </li>
-            <li>
-              <span class="fas fa-microscope"><span class="label"></span></span>
-            </li>
-            <li>
-              <span class="fas fa-bolt"><span class="label"></span></span>
-            </li>
-          </ul>
-        </div>
-      </section>
+  /* stat strip */
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--line); }
+  .stat{ padding:26px 24px; border-right:1px solid var(--line); }
+  .stat:last-child{ border-right:none; }
+  .stat .num{ font-family:'IBM Plex Mono',monospace; font-size:1.7rem; color:var(--amber); }
+  .stat .lbl{ margin-top:6px; font-size:0.8rem; color:var(--ink-dim); }
 
-      <!-- Two -->
-      <section id="two" class="wrapper alt style2">
-        <section class="spotlight">
-          <div class="image"><img src="images/etude.png" alt="" /></div>
-          <div class="content">
-            <h2>Formation académique :</h2>
-            <p>
-              Bac STI Electronique <br />Niveau BTS Technico-Commercial option
-              Mécanique Electrique
-            </p>
+  .scanline{ position:absolute; left:0; right:0; top:0; height:1px; background:linear-gradient(90deg, transparent, var(--cyan), transparent); animation:scan 4s linear infinite; opacity:0.7; }
+  @keyframes scan{ 0%{ top:0%; } 100%{ top:100%; } }
 
-            <h2>Formation continue :</h2>
-            <p>
-              Je me forme en continu à la cybersécurité de manière autonome via
-              des plateformes spécialisées (Seela, Hack The Box), des contenus
-              éducatifs (YouTube, LinkedIn) et une veille technologique
-              régulière pour approfondir mes compétences et suivre l'évolution
-              du domaine.
-            </p>
-          </div>
-        </section>
-      </section>
-      <section class="spotlight">
-        <div class="image"><img src="images/operateur.jpg" alt="" /></div>
-        <div class="content">
-          <h2>Technicien de test : - 3D Plus Buc 2018 à aujourd’hui</h2>
-          <p>
-            • Test des mémoires numériques (sur Mutest/D10) et analogiques sur
-            les bancs de test dédiés. <br />• Réalisation des écritures /
-            lectures et des Full memory test sur Elnec, ainsi que de la
-            vérification des Bad Block. <br />• Autonomie dans la gestion des
-            tâches et des responsabilités liées au test. <br />
-            • Réalisation de documents clients regroupant les résultats de
-            tests.<br />
-            • Automatisation des taches récurrentes avec Python et des macros
-            vba (excel/word)
-          </p>
-        </div>
-      </section>
-      <section class="spotlight">
-        <div class="image">
-          <img src="images/circuit.jpg" alt="Image d'un circuit electronique" />
-        </div>
-        <div class="content">
-          <h2>
-            Expérience professionnel<br />Opérateur de Test - 3D Plus Buc
-            2013-2018
-          </h2>
-          <p>
-            • Développement initial en tant qu'opérateur de test, acquérant une
-            connaissance approfondie du processus de test.
-          </p>
-        </div>
-      </section>
+  /* ---------- Sections generic ---------- */
+  section{ padding:72px 0; border-bottom:1px solid var(--line); }
+  .section-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:38px; }
+  .section-head .doc{ font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--amber); white-space:nowrap; }
+  .section-head h2{ font-size:1.7rem; }
+  .section-head::after{ content:""; flex:1; height:1px; background:var(--line); }
 
-      <!-- Three -->
-      <section id="three" class="wrapper style3 special">
-        <div class="inner">
-          <header class="major">
-            <h2>Centres d'intérêt :</h2>
-            <p>
-              Musique : Guitare <br />
-              Piano
-            </p>
-            <p>
-              Programmation : Python (Open CV/ Sélénium, Django...)<br />
-              PHP framework Symfony <br />
-              React.js / React native <br />
-              HTML/CSS
-            </p>
-            <p>
-              Passionné par la cybersécurité, j'ai développé mon intérêt et mon
-              expertise dans ce domaine en explorant activement des plateformes
-              d'apprentissage en ligne telles que Root Me, Seela, Try Hack Me ou
-              encore Hack The Box, qui m'ont permis de relever des défis
-              stimulants et de renforcer mes compétences en matière de sécurité
-              informatique ainsi de tenir le rôle d'ambassadeur chez seela et
-              SysAdmin sur PWND-Nest.
-            </p>
-          </header>
-          <div class="image-container">
-            <a href="https://www.root-me.org/" target="_blank">
-              <img src="./images/root-me.png" alt="Image de Root Me" />
-            </a>
-            <br /><br />
-            <a href="https://seela.io/" target="_blank">
-              <img src="./images/seela.png" alt="Image de Seela" />
-            </a>
-            <a href="https://www.hackthebox.com/" target="_blank">
-              <img src="./images/htb.png" alt="Image de Hack the box" />
-            </a>
-            <a href="https://pwnd-nest.fr/" target="_blank">
-              <img src="./images/pwndnest.png" alt="Image de PWND-NEST" />
-            </a>
-            <a href="https://tryhackme.com/" target="_blank">
-              <img src="./images/try.png" alt="Image de try hack me" />
-            </a>
-          </div>
-        </div>
-      </section>
+  /* ---------- Profil ---------- */
+  #profil p{ max-width:68ch; color:var(--ink-dim); font-size:1.03rem; }
+  #profil p + p{ margin-top:16px; }
 
-      <!-- Footer -->
-      <footer id="footer">
-        <ul class="icons">
-          <li>
-            <a href="mailto:roriou78@gmail.com" class="icon solid fa-envelope"
-              ><span class="label">Email</span></a
-            >
-          </li>
+  /* ---------- Compétences ---------- */
+  .skills-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .skill-card{ position:relative; background:var(--panel); border:1px solid var(--line); padding:26px; }
+  .skill-card::before{ content:""; position:absolute; top:-1px; left:-1px; width:14px; height:14px; border-top:2px solid var(--amber); border-left:2px solid var(--amber); }
+  .skill-card::after{ content:""; position:absolute; bottom:-1px; right:-1px; width:14px; height:14px; border-bottom:2px solid var(--amber); border-right:2px solid var(--amber); }
+  .skill-card h3{ font-size:1rem; margin-bottom:9px; }
+  .skill-card p{ color:var(--ink-dim); font-size:0.93rem; }
+
+  .platforms{ margin-top:20px; display:flex; flex-wrap:wrap; gap:10px; }
+  .platform{ border:1px solid var(--line); background:var(--panel); padding:10px 16px; font-size:0.86rem; display:flex; align-items:center; gap:9px; font-family:'IBM Plex Mono',monospace; }
+  .platform .dot{ width:6px; height:6px; border-radius:50%; background:var(--cyan); }
+
+  /* ---------- Expérience (timeline) ---------- */
+  .timeline{ position:relative; padding-left:34px; }
+  .timeline::before{ content:""; position:absolute; left:6px; top:6px; bottom:6px; width:1px; background:repeating-linear-gradient(var(--line) 0 6px, transparent 6px 12px); }
+  .entry{ position:relative; padding-bottom:44px; opacity:0; transform:translateX(-8px); transition:opacity .6s ease, transform .6s ease; }
+  .entry.visible{ opacity:1; transform:none; }
+  .entry:last-child{ padding-bottom:0; }
+  .entry::before{ content:""; position:absolute; left:-34px; top:6px; width:13px; height:13px; background:var(--bg); border:2px solid var(--amber); }
+  .entry .period{ font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:var(--amber); }
+  .entry h3{ font-size:1.15rem; margin-top:5px; }
+  .entry .org{ color:var(--ink-dim); font-size:0.95rem; margin-bottom:12px; }
+  .entry ul{ padding-left:18px; color:var(--ink-dim); font-size:0.95rem; }
+  .entry li + li{ margin-top:6px; }
+
+  /* ---------- Certifications ---------- */
+  .cert{ position:relative; background:var(--panel); border:1px solid var(--line); padding:26px 28px; margin-bottom:14px; display:flex; gap:20px; align-items:flex-start; }
+  .cert .seal{ flex:0 0 auto; width:44px; height:44px; border:1px solid var(--amber); display:flex; align-items:center; justify-content:center; transform:rotate(45deg); }
+  .cert .seal span{ transform:rotate(-45deg); font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--amber); }
+  .cert .title{ font-weight:600; font-size:1.02rem; }
+  .cert .meta{ color:var(--ink-dim); font-size:0.9rem; margin-top:4px; }
+  .cert .score{ display:inline-block; margin-top:12px; font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--cyan); border:1px solid var(--cyan); background:var(--cyan-soft); padding:5px 11px; }
+
+  /* ---------- Démo technique ---------- */
+  .demo-box{ position:relative; border:1px solid var(--line); padding:30px; display:flex; justify-content:space-between; align-items:center; gap:22px; flex-wrap:wrap; background:var(--panel); }
+  .demo-box::before{ content:""; position:absolute; top:-1px; left:-1px; width:16px; height:16px; border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); }
+  .demo-box::after{ content:""; position:absolute; bottom:-1px; right:-1px; width:16px; height:16px; border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan); }
+  .demo-box h3{ font-size:1.05rem; }
+  .demo-box p{ color:var(--ink-dim); font-size:0.92rem; margin-top:6px; max-width:48ch; }
+  .badge-soon{ font-family:'IBM Plex Mono',monospace; font-size:0.76rem; color:var(--amber); border:1px solid var(--amber); padding:4px 10px; }
+
+  /* ---------- Contact ---------- */
+  #contact{ border-bottom:none; }
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); }
+  .contact-item{ background:var(--bg); padding:22px 24px; }
+  .contact-item .label{ font-family:'IBM Plex Mono',monospace; font-size:0.76rem; color:var(--amber); }
+  .contact-item .value{ font-size:1.03rem; margin-top:6px; }
+  .contact-item a{ text-decoration:none; border-bottom:1px solid var(--line); }
+  .contact-item a:hover{ border-color:var(--amber); color:var(--amber); }
+
+  footer{ padding:30px 0 44px; text-align:center; color:var(--ink-dim); font-size:0.82rem; font-family:'IBM Plex Mono',monospace; }
+
+  @media (max-width:720px){
+    .skills-grid{ grid-template-columns:1fr; }
+    .contact-grid{ grid-template-columns:1fr; }
+    .stats{ grid-template-columns:repeat(2,1fr); }
+    .stat:nth-child(2){ border-right:none; }
+    nav ul{ position:fixed; top:66px; left:0; right:0; background:var(--bg); flex-direction:column; gap:0; border-bottom:1px solid var(--line); max-height:0; overflow:hidden; transition:max-height .25s ease; }
+    nav ul.open{ max-height:320px; }
+    nav li{ border-top:1px solid var(--line); }
+    nav a{ display:block; padding:14px 28px; }
+    .nav-toggle{ display:block; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <nav class="wrap">
+    <div class="brand">RENAUD ORIOU <span class="tag">DEV / SEC</span></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+    <ul id="navMenu">
+      <li><a href="#profil">Profil</a></li>
+      <li><a href="#competences">Compétences</a></li>
+      <li><a href="#experience">Expérience</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="grid-frame"><span class="corner tl"></span><span class="corner tr"></span></div>
+    <div class="scanline"></div>
+    <div class="wrap hero-inner">
+      <div class="ref"><span class="blip"></span><span class="mono">FICHE 01 — PROFIL TECHNIQUE</span></div>
+      <h1>Oriou Renaud</h1>
+      <p class="role">Technicien Automatisation &amp; Développeur Outils / Cybersécurité</p>
+      <p class="lead">13 ans de rigueur en test &amp; validation électronique en environnement exigeant, mis au service d'outils Python qui automatisent le travail des équipes — et une expertise cybersécurité construite en parallèle, sur le terrain.</p>
+      <div class="actions">
+        <a class="btn primary" href="#contact">CONTACTER</a>
+        
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="stats">
+        <div class="stat"><div class="num mono">13 ANS</div><div class="lbl">Test &amp; validation industrielle</div></div>
+        <div class="stat"><div class="num mono">3e</div><div class="lbl">Classement CREED CTF</div></div>
+        <div class="stat"><div class="num mono">100%</div><div class="lbl">Score sécurité OT (certif. SEELA)</div></div>
+        <div class="stat"><div class="num mono">2026</div><div class="lbl">Fondation NERODIA LAB</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="profil" class="wrap">
+    <div class="section-head"><span class="doc mono">FICHE 02</span><h2>Profil professionnel</h2></div>
+    <p>Technicien de test expérimenté, passionné par le développement d'outils et l'automatisation en Python. Solide expérience industrielle en environnement exigeant (3D PLUS), couplée à une expertise pointue en cybersécurité — CTF, administration Linux, sécurité des systèmes industriels (OT).</p>
+    <p>Je recherche un poste orienté Test, Validation & Automatisation (Technicien de test, Développeur outils ou Product Builder) pour mettre mon expertise technique au service de l'optimisation des processus et du développement d'outils internes.</p>
+  </section>
+</br>
+  <section id="competences" class="wrap">
+    <div class="section-head"><span class="doc mono">FICHE 03</span><h2>Compétences clés</h2></div>
+    <div class="skills-grid">
+      <div class="skill-card"><h3>Développement &amp; automatisation</h3><p>Python, VBA, scripts d'optimisation de flux, traitement de données, Git.</p></div>
+      <div class="skill-card"><h3>Systèmes &amp; web</h3><p>Administration Linux (sysadmin), gestion de plateformes CTF, React.js, PHP.</p></div>
+      <div class="skill-card"><h3>Cybersécurité &amp; offensive</h3><p>Certification Ethical Hacker, analyse de flux, sécurité des chaînes de production (OT).</p></div>
+      <div class="skill-card"><h3>Industrie &amp; test</h3><p>Validation de composants (mémoires, caméras, FPGA), traçabilité, rigueur qualité.</p></div>
+    </div>
+    <div class="platforms">
+      <span class="platform"><span class="dot"></span>SEELA — Ambassadeur &amp; certifié Ethical Hacker</span>
+      <span class="platform"><span class="dot"></span>PWND-NEST — Sysadmin &amp; support</span>
+      <span class="platform"><span class="dot"></span>CREED CTF — classé 3e</span>
+      <span class="platform"><span class="dot"></span>Hack The Box</span>
+      <span class="platform"><span class="dot"></span>Root-Me</span>
+    </div>
+  </section>
+</br>
+  <section id="experience" class="wrap">
+    <div class="section-head"><span class="doc mono">FICHE 04</span><h2>Expérience professionnelle</h2></div>
+    <div class="timeline">
+      <div class="entry">
+        <span class="period">DEPUIS 2026</span>
+        <h3>Fondateur &amp; développeur</h3>
+        <div class="org">Micro-entreprise NERODIA LAB</div>
+        <ul><li>Prestations de services numériques et développement de solutions logicielles sur mesure.</li></ul>
+      </div>
+      <div class="entry">
+        <span class="period">DEPUIS MARS 2024</span>
+        <h3>Administrateur système &amp; support</h3>
+        <div class="org">Plateforme PWND-NEST &amp; SEELA</div>
+        <ul><li>Administration des infrastructures Linux, gestion globale de la plateforme CTF et support technique des abonnés.</li></ul>
+      </div>
+      <div class="entry">
+        <span class="period">2018 — PRÉSENT</span>
+        <h3>Technicien test &amp; validation</h3>
+        <div class="org">3D Plus, Buc (78)</div>
+        <ul>
+          <li>Automatisation des flux : conception et déploiement de scripts Python / VBA pour automatiser le traitement des données de test et optimiser la production.</li>
+          <li>Validation technique : test de mémoires numériques/analogiques (Mutest/D10) et de caméras (CASPEX/AURIGA) avec vérification de code FPGA.</li>
+          <li>Gestion &amp; reporting : création et structuration de fichiers clients intégrant les résultats de tests pour un suivi analytique précis.</li>
         </ul>
-        <ul class="copyright">
-          <li>&copy; Oriou Renaud</li>
-        </ul>
-      </footer>
+      </div>
+      <div class="entry">
+        <span class="period">2013 — 2018</span>
+        <h3>Opérateur test</h3>
+        <div class="org">3D Plus, Buc (78)</div>
+        <ul><li>Développement initial en tant qu'opérateur de test, acquisition d'une connaissance approfondie du processus de test.</li></ul>
+      </div>
+      <div class="entry">
+        <span class="period">2000 — 2013</span>
+        <h3>Commercial &amp; expert domotique</h3>
+        <div class="org">Rexel, Fresnes (94) / Versailles (78)</div>
+        <ul><li>Conseil technique et commercial sur les solutions domotique.</li></ul>
+      </div>
+    </div>
+  </section>
+</br>
+  <section id="certifications" class="wrap">
+    <div class="section-head"><span class="doc mono">FICHE 05</span><h2>Formations &amp; certifications</h2></div>
+    <div class="cert">
+      <div class="seal"><span>SEC</span></div>
+      <div>
+        <div class="title">Certification Ethical Hacker — SEELA</div>
+        <div class="meta">Août 2025 · Mention très honorable</div>
+        <span class="score">80,18% GLOBAL — 100% OT &amp; CYBERDÉFENSE</span>
+      </div>
+    </div>
+    <div class="cert">
+      <div class="seal"><span>BTS</span></div>
+      <div>
+        <div class="title">BTS Technico-Commercial — option Mécanique Électronique</div>
+        <div class="meta">CFA Codis, Paris (75)</div>
+      </div>
+    </div>
+    <div class="cert">
+      <div class="seal"><span>BAC</span></div>
+      <div>
+        <div class="title">Bac STI Électronique</div>
+        <div class="meta">Lycée Émilie de Breteuil, Saint-Quentin-en-Yvelines (78)</div>
+      </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.scrollex.min.js"></script>
-    <script src="assets/js/jquery.scrolly.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
-  </body>
+    <div class="demo-box" style="margin-top:30px;">
+      <div>
+        <h3>Démo technique en ligne — SpecWatch</h3>
+        <p>Un outil réel, déployé et fonctionnel, pour voir le code en action plutôt que sur un CV. Détection de FAIL et de pièces atypiques sur données de mesures (données de démonstration).</p>
+      </div>
+      <a class="btn primary" href="demo-qc-radar.html">VOIR LA DÉMO</a>
+    </div>
+  </section>
+</br>
+  <section id="contact" class="wrap">
+    <div class="section-head"><span class="doc mono">FICHE 06</span><h2>Contact</h2></div>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="label">EMAIL</div>
+        <div class="value"><a href="mailto:roriou78@gmail.com">roriou78@gmail.com</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="label">TÉLÉPHONE</div>
+        <div class="value"><a href="tel:+33650057475">06 50 05 74 75</a></div>
+      </div>
+      <div class="contact-item" style="grid-column: 1 / -1;">
+        <div class="label">LOCALISATION</div>
+        <div class="value">Abondant (28410) — mobilité Vélizy, Élancourt, Dreux</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>© ORIOU RENAUD — DOSSIER TECHNIQUE / REV. 2026</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const menu = document.getElementById('navMenu');
+  toggle.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    menu.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  const entries = document.querySelectorAll('.entry');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((items) => {
+      items.forEach(item => {
+        if (item.isIntersecting) {
+          item.target.classList.add('visible');
+          io.unobserve(item.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    entries.forEach(e => io.observe(e));
+  } else {
+    entries.forEach(e => e.classList.add('visible'));
+  }
+</script>
+
+</body>
 </html>
